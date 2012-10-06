@@ -70,4 +70,4 @@ func (mc *MultiCall) ${cmd^}(args ...interface{}) {
 }" >>$filename
 done
 
-gofmt -tabs=true -tabwidth=4 -w $filename
+gofmt -w $filename
