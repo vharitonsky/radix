@@ -20,7 +20,11 @@ type TI interface {
 }
 
 func setUpTest(c TI) {
-	rd, _ = NewConn(conf)
+	var err *Error
+	rd, err = NewConn(conf)
+	if err != nil {
+		c.Fatalf("setUp NewConn failed: %s", err)
+	}
 	r := rd.Flushall()
 	if r.Err != nil {
 		c.Fatalf("setUp FLUSHALL failed: %s", r.Err)
@@ -435,10 +439,11 @@ func (s *S) TestError(c *C) {
 	c.Check(errext.Test(ErrorConnection), Equals, true)
 	c.Check(errext.Test(ErrorLoading), Equals, true)
 }
-/*
+
 // Test tcp/ip connections.
 func (s *S) TestTCP(c *C) {
-	rdA := NewConn(conf)
+	rdA, err := NewConn(conf)
+	c.Assert(err, IsNil)
 	rep := rdA.Echo("Hello, World!")
 	c.Assert(rep.Err, IsNil)
 	vs, _ := rep.Str()
@@ -450,13 +455,14 @@ func (s *S) TestUnix(c *C) {
 	conf2 := DefaultConfig()
 	conf2.Network = "unix"
 	conf2.Address = "/tmp/redis.sock"
-	rdA := NewConn(conf2)
+	rdA, errn := NewConn(conf2)
+	c.Assert(errn, IsNil)
 	rep := rdA.Echo("Hello, World!")
 	vs, err := rep.Str()
 	c.Assert(err, IsNil)
 	c.Check(vs, Equals, "Hello, World!")
 }
-*/
+
 // Test Conn.InfoMap.
 func (s *S) TestInfoMap(c *C) {
 	im, err := rd.InfoMap()
@@ -576,16 +582,17 @@ func (s *Long) TestAbortingComplexTransaction(c *C) {
 	c.Assert(r.Type, Equals, ReplyMulti)
 	c.Check(r.Elems[1].Type, Equals, ReplyNil)
 }
-/*
+
 // Test illegal database.
 func (s *Long) TestIllegalDatabase(c *C) {
 	conf2 := conf
 	conf2.Database = 4711
-	rdA := NewConn(conf2)
+	rdA, err := NewConn(conf2)
+	c.Assert(err, NotNil)
 	rA := rdA.Ping()
 	c.Check(rA.Err, NotNil)
 }
-*/
+
 //* Utils tests
 
 // Test formatArg().
