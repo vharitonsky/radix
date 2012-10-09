@@ -3,12 +3,11 @@ package redis
 type ErrorFlag uint8
 
 const (
-	ErrorRedis ErrorFlag = 1 << iota
-	ErrorConnection
-	ErrorLoading
-	ErrorAuth
-	ErrorParse
-	ErrorInvalid
+	ErrorRedis ErrorFlag = 1 << iota // Redis error
+	ErrorConnection // connection error
+	ErrorLoading // Redis LOADING error
+	ErrorAuth // authentication error
+	ErrorParse // reply parsing error
 	ErrorTimeout
 )
 

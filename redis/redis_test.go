@@ -471,7 +471,7 @@ func (s *S) TestInfoMap(c *C) {
 }
 
 //* Long tests
-/*
+
 // Test Subscription.
 func (s *Long) TestSubscription(c *C) {
 	var messages []*Message
@@ -557,7 +557,7 @@ func (s *Long) TestPsubscribe(c *C) {
 	c.Check(messages[2].Pattern, Equals, "foo.*")
 	c.Check(messages[2].Subscriptions, Equals, 0)
 }
-*/
+
 // Test aborting complex tranactions.
 func (s *Long) TestAbortingComplexTransaction(c *C) {
 	go func() {

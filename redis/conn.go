@@ -28,8 +28,8 @@ type Conn struct {
 	reader        *bufio.Reader
 	config        Config
 	submode bool // are we in subscription mode?
-	subs []string // subscriptions
-	psubs []string // pattern subscriptions
+	subs map[string]struct{} // set of subscriptions
+	psubs map[string]struct{} // set of pattern subscriptions
 }
 
 // NewConn creates a new Conn.
@@ -37,6 +37,8 @@ func NewConn(config Config)  (*Conn, *Error) {
 	var err error
 	c := new(Conn)
 	c.config = config
+	c.subs = make(map[string]struct{})
+	c.psubs = make(map[string]struct{})
 
 	// Establish a connection.
 	c.conn, err = net.Dial(c.config.Network, c.config.Address)
@@ -90,7 +92,7 @@ func NewConn(config Config)  (*Conn, *Error) {
 }
 
 // Close closes the connection.
-// Any blocked operations will be unblocked and return errors.
+// Any blocked Read or Write operations will be unblocked and return errors.
 func (c *Conn) Close() error {
 	return c.conn.Close()
 }
@@ -136,6 +138,25 @@ func (c *Conn) AsyncTransaction(mc func(*MultiCall)) Future {
 	}()
 	return f
 }
+
+// InfoMap calls the INFO command, parses and returns the results as a map[string]string or an error. 
+// Use Info() method for fetching the unparsed INFO results.
+func (c *Conn) InfoMap() (map[string]string, error) {
+	info := make(map[string]string)
+	r := c.call(cmdInfo)
+	s, err := r.Str()
+	if err != nil {
+		return nil, err
+	}
+	for _, e := range infoRe.FindAllStringSubmatch(s, -1) {
+		if len(e) != 3 {
+			return nil, errors.New("failed to parse INFO results")
+		}
+		info[e[1]] = e[2]
+	}
+	return info, nil
+}
+
 /*
 // Subscription returns a new Subscription instance with the given message handler callback or
 // an error. The message handler is called whenever a new message arrives.
@@ -154,31 +175,12 @@ func (c *Conn) Subscription(msgHdlr func(msg *Message)) (*Subscription, *Error) 
 	return sub, nil
 }
 */
-// InfoMap calls the INFO command, parses and returns the results as a map[string]string or an error. 
-// Use Info method for fetching the unparsed INFO results.
-func (c *Conn) InfoMap() (map[string]string, error) {
-	info := make(map[string]string)
-	r := c.call(cmdInfo)
-
-	s, err := r.Str()
-	if err != nil {
-		return nil, err
-	}
-
-	for _, e := range infoRe.FindAllStringSubmatch(s, -1) {
-		if len(e) != 3 {
-			return nil, errors.New("failed to parse INFO results")
-		}
-
-		info[e[1]] = e[2]
-	}
-
-	return info, nil
-}
 
 //* Private methods
 
 func (c *Conn) call(cmd Cmd, args ...interface{}) *Reply {
+	if c.submode {
+		return &Reply{Type: ReplyError, Err: err}
 	if err := c.writeRequest(call{cmd, args}); err != nil {
 		return &Reply{Type: ReplyError, Err: err}
 	} 
@@ -209,7 +211,7 @@ func (c *Conn) multiCall(cmds []call) (r *Reply) {
 
 	return r
 }
-/*
+
 // subscription handles subscribe, unsubscribe, psubscribe and pubsubscribe calls.
 func (c *Conn) subscription(subType subType, data []string) *Error {
 	// Prepare command.
@@ -240,7 +242,7 @@ func (c *Conn) subscription(subType subType, data []string) *Error {
 	return newError(err.Error())
 	// subscribe/etc. return their replies as pubsub messages
 }
-*/
+
 // helper for read()
 func (c *Conn) readErrHdlr(err error) (r *Reply) {
 	if err != nil {
@@ -364,13 +366,13 @@ func (c *Conn) read() (r *Reply) {
 			default:
 				// invalid reply
 				r.Type = ReplyError
-				r.Err = newError("received invalid reply", ErrorInvalid)
+				r.Err = newError("received invalid reply", ErrorParse)
 			}
 		}
 	default:
 		// invalid reply
 		r.Type = ReplyError
-		r.Err = newError("received invalid reply", ErrorInvalid)
+		r.Err = newError("received invalid reply", ErrorParse)
 	}
 
 	return r
