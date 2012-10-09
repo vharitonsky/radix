@@ -588,7 +588,7 @@ func (s *Long) TestIllegalDatabase(c *C) {
 	conf2 := conf
 	conf2.Database = 4711
 	rdA, err := NewConn(conf2)
-	c.Assert(err, NotNil)
+	c.Assert(err, IsNil)
 	rA := rdA.Ping()
 	c.Check(rA.Err, NotNil)
 }
