@@ -20,7 +20,7 @@ cmds=`cat $redis_h | egrep '^void ([a-z])*Command\(' | sed 's/void \([a-z]*\)Com
 # SMEMBERS is missing from redis.h
 cmds=("${cmds[@]}" "smembers")
 # remove *SUBSCRIBE commands
-declare -a cmds=($cmds)
+declare -a cmds=(${cmds[@]})
 declare -a cmds=(${cmds[@]/*subscribe/})
 # sort
 cmds=($(printf "%s\n" "${cmds[@]}"|sort))
@@ -47,7 +47,7 @@ echo -e ")
 for cmd in ${cmds[@]}; do
     echo "
 // ${cmd^} calls Redis ${cmd^^} command. 
-func (c *Client) ${cmd^}(args ...interface{}) *Reply {
+func (c *Conn) ${cmd^}(args ...interface{}) *Reply {
 	return c.call(cmd${cmd^}, args...)
 }" >>$filename
 done
@@ -56,7 +56,7 @@ done
 for cmd in ${cmds[@]}; do
     echo "
 // Async${cmd^} calls Redis ${cmd^^} asynchronously. 
-func (c *Client) Async${cmd^}(args ...interface{}) Future {
+func (c *Conn) Async${cmd^}(args ...interface{}) Future {
 	return c.asyncCall(cmd${cmd^}, args...)
 }" >>$filename
 done

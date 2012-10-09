@@ -109,6 +109,7 @@ const (
 	cmdSinterstore      Cmd = "SINTERSTORE"
 	cmdSismember        Cmd = "SISMEMBER"
 	cmdSlaveof          Cmd = "SLAVEOF"
+	cmdSmembers         Cmd = "SMEMBERS"
 	cmdSmove            Cmd = "SMOVE"
 	cmdSort             Cmd = "SORT"
 	cmdSpop             Cmd = "SPOP"
@@ -142,1322 +143,1332 @@ const (
 )
 
 // Append calls Redis APPEND command. 
-func (c *Client) Append(args ...interface{}) *Reply {
+func (c *Conn) Append(args ...interface{}) *Reply {
 	return c.call(cmdAppend, args...)
 }
 
 // Asking calls Redis ASKING command. 
-func (c *Client) Asking(args ...interface{}) *Reply {
+func (c *Conn) Asking(args ...interface{}) *Reply {
 	return c.call(cmdAsking, args...)
 }
 
 // Auth calls Redis AUTH command. 
-func (c *Client) Auth(args ...interface{}) *Reply {
+func (c *Conn) Auth(args ...interface{}) *Reply {
 	return c.call(cmdAuth, args...)
 }
 
 // Bgrewriteaof calls Redis BGREWRITEAOF command. 
-func (c *Client) Bgrewriteaof(args ...interface{}) *Reply {
+func (c *Conn) Bgrewriteaof(args ...interface{}) *Reply {
 	return c.call(cmdBgrewriteaof, args...)
 }
 
 // Bgsave calls Redis BGSAVE command. 
-func (c *Client) Bgsave(args ...interface{}) *Reply {
+func (c *Conn) Bgsave(args ...interface{}) *Reply {
 	return c.call(cmdBgsave, args...)
 }
 
 // Bitcount calls Redis BITCOUNT command. 
-func (c *Client) Bitcount(args ...interface{}) *Reply {
+func (c *Conn) Bitcount(args ...interface{}) *Reply {
 	return c.call(cmdBitcount, args...)
 }
 
 // Bitop calls Redis BITOP command. 
-func (c *Client) Bitop(args ...interface{}) *Reply {
+func (c *Conn) Bitop(args ...interface{}) *Reply {
 	return c.call(cmdBitop, args...)
 }
 
 // Blpop calls Redis BLPOP command. 
-func (c *Client) Blpop(args ...interface{}) *Reply {
+func (c *Conn) Blpop(args ...interface{}) *Reply {
 	return c.call(cmdBlpop, args...)
 }
 
 // Brpop calls Redis BRPOP command. 
-func (c *Client) Brpop(args ...interface{}) *Reply {
+func (c *Conn) Brpop(args ...interface{}) *Reply {
 	return c.call(cmdBrpop, args...)
 }
 
 // Brpoplpush calls Redis BRPOPLPUSH command. 
-func (c *Client) Brpoplpush(args ...interface{}) *Reply {
+func (c *Conn) Brpoplpush(args ...interface{}) *Reply {
 	return c.call(cmdBrpoplpush, args...)
 }
 
 // Client calls Redis CLIENT command. 
-func (c *Client) Client(args ...interface{}) *Reply {
+func (c *Conn) Client(args ...interface{}) *Reply {
 	return c.call(cmdClient, args...)
 }
 
 // Cluster calls Redis CLUSTER command. 
-func (c *Client) Cluster(args ...interface{}) *Reply {
+func (c *Conn) Cluster(args ...interface{}) *Reply {
 	return c.call(cmdCluster, args...)
 }
 
 // Config calls Redis CONFIG command. 
-func (c *Client) Config(args ...interface{}) *Reply {
+func (c *Conn) Config(args ...interface{}) *Reply {
 	return c.call(cmdConfig, args...)
 }
 
 // Dbsize calls Redis DBSIZE command. 
-func (c *Client) Dbsize(args ...interface{}) *Reply {
+func (c *Conn) Dbsize(args ...interface{}) *Reply {
 	return c.call(cmdDbsize, args...)
 }
 
 // Debug calls Redis DEBUG command. 
-func (c *Client) Debug(args ...interface{}) *Reply {
+func (c *Conn) Debug(args ...interface{}) *Reply {
 	return c.call(cmdDebug, args...)
 }
 
 // Decr calls Redis DECR command. 
-func (c *Client) Decr(args ...interface{}) *Reply {
+func (c *Conn) Decr(args ...interface{}) *Reply {
 	return c.call(cmdDecr, args...)
 }
 
 // Decrby calls Redis DECRBY command. 
-func (c *Client) Decrby(args ...interface{}) *Reply {
+func (c *Conn) Decrby(args ...interface{}) *Reply {
 	return c.call(cmdDecrby, args...)
 }
 
 // Del calls Redis DEL command. 
-func (c *Client) Del(args ...interface{}) *Reply {
+func (c *Conn) Del(args ...interface{}) *Reply {
 	return c.call(cmdDel, args...)
 }
 
 // Discard calls Redis DISCARD command. 
-func (c *Client) Discard(args ...interface{}) *Reply {
+func (c *Conn) Discard(args ...interface{}) *Reply {
 	return c.call(cmdDiscard, args...)
 }
 
 // Dump calls Redis DUMP command. 
-func (c *Client) Dump(args ...interface{}) *Reply {
+func (c *Conn) Dump(args ...interface{}) *Reply {
 	return c.call(cmdDump, args...)
 }
 
 // Echo calls Redis ECHO command. 
-func (c *Client) Echo(args ...interface{}) *Reply {
+func (c *Conn) Echo(args ...interface{}) *Reply {
 	return c.call(cmdEcho, args...)
 }
 
 // Eval calls Redis EVAL command. 
-func (c *Client) Eval(args ...interface{}) *Reply {
+func (c *Conn) Eval(args ...interface{}) *Reply {
 	return c.call(cmdEval, args...)
 }
 
 // Exec calls Redis EXEC command. 
-func (c *Client) Exec(args ...interface{}) *Reply {
+func (c *Conn) Exec(args ...interface{}) *Reply {
 	return c.call(cmdExec, args...)
 }
 
 // Exists calls Redis EXISTS command. 
-func (c *Client) Exists(args ...interface{}) *Reply {
+func (c *Conn) Exists(args ...interface{}) *Reply {
 	return c.call(cmdExists, args...)
 }
 
 // Expire calls Redis EXPIRE command. 
-func (c *Client) Expire(args ...interface{}) *Reply {
+func (c *Conn) Expire(args ...interface{}) *Reply {
 	return c.call(cmdExpire, args...)
 }
 
 // Expireat calls Redis EXPIREAT command. 
-func (c *Client) Expireat(args ...interface{}) *Reply {
+func (c *Conn) Expireat(args ...interface{}) *Reply {
 	return c.call(cmdExpireat, args...)
 }
 
 // Flushall calls Redis FLUSHALL command. 
-func (c *Client) Flushall(args ...interface{}) *Reply {
+func (c *Conn) Flushall(args ...interface{}) *Reply {
 	return c.call(cmdFlushall, args...)
 }
 
 // Flushdb calls Redis FLUSHDB command. 
-func (c *Client) Flushdb(args ...interface{}) *Reply {
+func (c *Conn) Flushdb(args ...interface{}) *Reply {
 	return c.call(cmdFlushdb, args...)
 }
 
 // Get calls Redis GET command. 
-func (c *Client) Get(args ...interface{}) *Reply {
+func (c *Conn) Get(args ...interface{}) *Reply {
 	return c.call(cmdGet, args...)
 }
 
 // Getbit calls Redis GETBIT command. 
-func (c *Client) Getbit(args ...interface{}) *Reply {
+func (c *Conn) Getbit(args ...interface{}) *Reply {
 	return c.call(cmdGetbit, args...)
 }
 
 // Getrange calls Redis GETRANGE command. 
-func (c *Client) Getrange(args ...interface{}) *Reply {
+func (c *Conn) Getrange(args ...interface{}) *Reply {
 	return c.call(cmdGetrange, args...)
 }
 
 // Getset calls Redis GETSET command. 
-func (c *Client) Getset(args ...interface{}) *Reply {
+func (c *Conn) Getset(args ...interface{}) *Reply {
 	return c.call(cmdGetset, args...)
 }
 
 // Hdel calls Redis HDEL command. 
-func (c *Client) Hdel(args ...interface{}) *Reply {
+func (c *Conn) Hdel(args ...interface{}) *Reply {
 	return c.call(cmdHdel, args...)
 }
 
 // Hexists calls Redis HEXISTS command. 
-func (c *Client) Hexists(args ...interface{}) *Reply {
+func (c *Conn) Hexists(args ...interface{}) *Reply {
 	return c.call(cmdHexists, args...)
 }
 
 // Hget calls Redis HGET command. 
-func (c *Client) Hget(args ...interface{}) *Reply {
+func (c *Conn) Hget(args ...interface{}) *Reply {
 	return c.call(cmdHget, args...)
 }
 
 // Hgetall calls Redis HGETALL command. 
-func (c *Client) Hgetall(args ...interface{}) *Reply {
+func (c *Conn) Hgetall(args ...interface{}) *Reply {
 	return c.call(cmdHgetall, args...)
 }
 
 // Hincrby calls Redis HINCRBY command. 
-func (c *Client) Hincrby(args ...interface{}) *Reply {
+func (c *Conn) Hincrby(args ...interface{}) *Reply {
 	return c.call(cmdHincrby, args...)
 }
 
 // Hincrbyfloat calls Redis HINCRBYFLOAT command. 
-func (c *Client) Hincrbyfloat(args ...interface{}) *Reply {
+func (c *Conn) Hincrbyfloat(args ...interface{}) *Reply {
 	return c.call(cmdHincrbyfloat, args...)
 }
 
 // Hkeys calls Redis HKEYS command. 
-func (c *Client) Hkeys(args ...interface{}) *Reply {
+func (c *Conn) Hkeys(args ...interface{}) *Reply {
 	return c.call(cmdHkeys, args...)
 }
 
 // Hlen calls Redis HLEN command. 
-func (c *Client) Hlen(args ...interface{}) *Reply {
+func (c *Conn) Hlen(args ...interface{}) *Reply {
 	return c.call(cmdHlen, args...)
 }
 
 // Hmget calls Redis HMGET command. 
-func (c *Client) Hmget(args ...interface{}) *Reply {
+func (c *Conn) Hmget(args ...interface{}) *Reply {
 	return c.call(cmdHmget, args...)
 }
 
 // Hmset calls Redis HMSET command. 
-func (c *Client) Hmset(args ...interface{}) *Reply {
+func (c *Conn) Hmset(args ...interface{}) *Reply {
 	return c.call(cmdHmset, args...)
 }
 
 // Hset calls Redis HSET command. 
-func (c *Client) Hset(args ...interface{}) *Reply {
+func (c *Conn) Hset(args ...interface{}) *Reply {
 	return c.call(cmdHset, args...)
 }
 
 // Hsetnx calls Redis HSETNX command. 
-func (c *Client) Hsetnx(args ...interface{}) *Reply {
+func (c *Conn) Hsetnx(args ...interface{}) *Reply {
 	return c.call(cmdHsetnx, args...)
 }
 
 // Hvals calls Redis HVALS command. 
-func (c *Client) Hvals(args ...interface{}) *Reply {
+func (c *Conn) Hvals(args ...interface{}) *Reply {
 	return c.call(cmdHvals, args...)
 }
 
 // Incr calls Redis INCR command. 
-func (c *Client) Incr(args ...interface{}) *Reply {
+func (c *Conn) Incr(args ...interface{}) *Reply {
 	return c.call(cmdIncr, args...)
 }
 
 // Incrby calls Redis INCRBY command. 
-func (c *Client) Incrby(args ...interface{}) *Reply {
+func (c *Conn) Incrby(args ...interface{}) *Reply {
 	return c.call(cmdIncrby, args...)
 }
 
 // Incrbyfloat calls Redis INCRBYFLOAT command. 
-func (c *Client) Incrbyfloat(args ...interface{}) *Reply {
+func (c *Conn) Incrbyfloat(args ...interface{}) *Reply {
 	return c.call(cmdIncrbyfloat, args...)
 }
 
 // Info calls Redis INFO command. 
-func (c *Client) Info(args ...interface{}) *Reply {
+func (c *Conn) Info(args ...interface{}) *Reply {
 	return c.call(cmdInfo, args...)
 }
 
 // Keys calls Redis KEYS command. 
-func (c *Client) Keys(args ...interface{}) *Reply {
+func (c *Conn) Keys(args ...interface{}) *Reply {
 	return c.call(cmdKeys, args...)
 }
 
 // Lastsave calls Redis LASTSAVE command. 
-func (c *Client) Lastsave(args ...interface{}) *Reply {
+func (c *Conn) Lastsave(args ...interface{}) *Reply {
 	return c.call(cmdLastsave, args...)
 }
 
 // Lindex calls Redis LINDEX command. 
-func (c *Client) Lindex(args ...interface{}) *Reply {
+func (c *Conn) Lindex(args ...interface{}) *Reply {
 	return c.call(cmdLindex, args...)
 }
 
 // Linsert calls Redis LINSERT command. 
-func (c *Client) Linsert(args ...interface{}) *Reply {
+func (c *Conn) Linsert(args ...interface{}) *Reply {
 	return c.call(cmdLinsert, args...)
 }
 
 // Llen calls Redis LLEN command. 
-func (c *Client) Llen(args ...interface{}) *Reply {
+func (c *Conn) Llen(args ...interface{}) *Reply {
 	return c.call(cmdLlen, args...)
 }
 
 // Lpop calls Redis LPOP command. 
-func (c *Client) Lpop(args ...interface{}) *Reply {
+func (c *Conn) Lpop(args ...interface{}) *Reply {
 	return c.call(cmdLpop, args...)
 }
 
 // Lpush calls Redis LPUSH command. 
-func (c *Client) Lpush(args ...interface{}) *Reply {
+func (c *Conn) Lpush(args ...interface{}) *Reply {
 	return c.call(cmdLpush, args...)
 }
 
 // Lpushx calls Redis LPUSHX command. 
-func (c *Client) Lpushx(args ...interface{}) *Reply {
+func (c *Conn) Lpushx(args ...interface{}) *Reply {
 	return c.call(cmdLpushx, args...)
 }
 
 // Lrange calls Redis LRANGE command. 
-func (c *Client) Lrange(args ...interface{}) *Reply {
+func (c *Conn) Lrange(args ...interface{}) *Reply {
 	return c.call(cmdLrange, args...)
 }
 
 // Lrem calls Redis LREM command. 
-func (c *Client) Lrem(args ...interface{}) *Reply {
+func (c *Conn) Lrem(args ...interface{}) *Reply {
 	return c.call(cmdLrem, args...)
 }
 
 // Lset calls Redis LSET command. 
-func (c *Client) Lset(args ...interface{}) *Reply {
+func (c *Conn) Lset(args ...interface{}) *Reply {
 	return c.call(cmdLset, args...)
 }
 
 // Ltrim calls Redis LTRIM command. 
-func (c *Client) Ltrim(args ...interface{}) *Reply {
+func (c *Conn) Ltrim(args ...interface{}) *Reply {
 	return c.call(cmdLtrim, args...)
 }
 
 // Mget calls Redis MGET command. 
-func (c *Client) Mget(args ...interface{}) *Reply {
+func (c *Conn) Mget(args ...interface{}) *Reply {
 	return c.call(cmdMget, args...)
 }
 
 // Migrate calls Redis MIGRATE command. 
-func (c *Client) Migrate(args ...interface{}) *Reply {
+func (c *Conn) Migrate(args ...interface{}) *Reply {
 	return c.call(cmdMigrate, args...)
 }
 
 // Monitor calls Redis MONITOR command. 
-func (c *Client) Monitor(args ...interface{}) *Reply {
+func (c *Conn) Monitor(args ...interface{}) *Reply {
 	return c.call(cmdMonitor, args...)
 }
 
 // Move calls Redis MOVE command. 
-func (c *Client) Move(args ...interface{}) *Reply {
+func (c *Conn) Move(args ...interface{}) *Reply {
 	return c.call(cmdMove, args...)
 }
 
 // Mset calls Redis MSET command. 
-func (c *Client) Mset(args ...interface{}) *Reply {
+func (c *Conn) Mset(args ...interface{}) *Reply {
 	return c.call(cmdMset, args...)
 }
 
 // Msetnx calls Redis MSETNX command. 
-func (c *Client) Msetnx(args ...interface{}) *Reply {
+func (c *Conn) Msetnx(args ...interface{}) *Reply {
 	return c.call(cmdMsetnx, args...)
 }
 
 // Multi calls Redis MULTI command. 
-func (c *Client) Multi(args ...interface{}) *Reply {
+func (c *Conn) Multi(args ...interface{}) *Reply {
 	return c.call(cmdMulti, args...)
 }
 
 // Object calls Redis OBJECT command. 
-func (c *Client) Object(args ...interface{}) *Reply {
+func (c *Conn) Object(args ...interface{}) *Reply {
 	return c.call(cmdObject, args...)
 }
 
 // Persist calls Redis PERSIST command. 
-func (c *Client) Persist(args ...interface{}) *Reply {
+func (c *Conn) Persist(args ...interface{}) *Reply {
 	return c.call(cmdPersist, args...)
 }
 
 // Pexpire calls Redis PEXPIRE command. 
-func (c *Client) Pexpire(args ...interface{}) *Reply {
+func (c *Conn) Pexpire(args ...interface{}) *Reply {
 	return c.call(cmdPexpire, args...)
 }
 
 // Pexpireat calls Redis PEXPIREAT command. 
-func (c *Client) Pexpireat(args ...interface{}) *Reply {
+func (c *Conn) Pexpireat(args ...interface{}) *Reply {
 	return c.call(cmdPexpireat, args...)
 }
 
 // Ping calls Redis PING command. 
-func (c *Client) Ping(args ...interface{}) *Reply {
+func (c *Conn) Ping(args ...interface{}) *Reply {
 	return c.call(cmdPing, args...)
 }
 
 // Psetex calls Redis PSETEX command. 
-func (c *Client) Psetex(args ...interface{}) *Reply {
+func (c *Conn) Psetex(args ...interface{}) *Reply {
 	return c.call(cmdPsetex, args...)
 }
 
 // Pttl calls Redis PTTL command. 
-func (c *Client) Pttl(args ...interface{}) *Reply {
+func (c *Conn) Pttl(args ...interface{}) *Reply {
 	return c.call(cmdPttl, args...)
 }
 
 // Publish calls Redis PUBLISH command. 
-func (c *Client) Publish(args ...interface{}) *Reply {
+func (c *Conn) Publish(args ...interface{}) *Reply {
 	return c.call(cmdPublish, args...)
 }
 
 // Randomkey calls Redis RANDOMKEY command. 
-func (c *Client) Randomkey(args ...interface{}) *Reply {
+func (c *Conn) Randomkey(args ...interface{}) *Reply {
 	return c.call(cmdRandomkey, args...)
 }
 
 // Rename calls Redis RENAME command. 
-func (c *Client) Rename(args ...interface{}) *Reply {
+func (c *Conn) Rename(args ...interface{}) *Reply {
 	return c.call(cmdRename, args...)
 }
 
 // Renamenx calls Redis RENAMENX command. 
-func (c *Client) Renamenx(args ...interface{}) *Reply {
+func (c *Conn) Renamenx(args ...interface{}) *Reply {
 	return c.call(cmdRenamenx, args...)
 }
 
 // Replconf calls Redis REPLCONF command. 
-func (c *Client) Replconf(args ...interface{}) *Reply {
+func (c *Conn) Replconf(args ...interface{}) *Reply {
 	return c.call(cmdReplconf, args...)
 }
 
 // Restore calls Redis RESTORE command. 
-func (c *Client) Restore(args ...interface{}) *Reply {
+func (c *Conn) Restore(args ...interface{}) *Reply {
 	return c.call(cmdRestore, args...)
 }
 
 // Rpop calls Redis RPOP command. 
-func (c *Client) Rpop(args ...interface{}) *Reply {
+func (c *Conn) Rpop(args ...interface{}) *Reply {
 	return c.call(cmdRpop, args...)
 }
 
 // Rpoplpush calls Redis RPOPLPUSH command. 
-func (c *Client) Rpoplpush(args ...interface{}) *Reply {
+func (c *Conn) Rpoplpush(args ...interface{}) *Reply {
 	return c.call(cmdRpoplpush, args...)
 }
 
 // Rpush calls Redis RPUSH command. 
-func (c *Client) Rpush(args ...interface{}) *Reply {
+func (c *Conn) Rpush(args ...interface{}) *Reply {
 	return c.call(cmdRpush, args...)
 }
 
 // Rpushx calls Redis RPUSHX command. 
-func (c *Client) Rpushx(args ...interface{}) *Reply {
+func (c *Conn) Rpushx(args ...interface{}) *Reply {
 	return c.call(cmdRpushx, args...)
 }
 
 // Sadd calls Redis SADD command. 
-func (c *Client) Sadd(args ...interface{}) *Reply {
+func (c *Conn) Sadd(args ...interface{}) *Reply {
 	return c.call(cmdSadd, args...)
 }
 
 // Save calls Redis SAVE command. 
-func (c *Client) Save(args ...interface{}) *Reply {
+func (c *Conn) Save(args ...interface{}) *Reply {
 	return c.call(cmdSave, args...)
 }
 
 // Scard calls Redis SCARD command. 
-func (c *Client) Scard(args ...interface{}) *Reply {
+func (c *Conn) Scard(args ...interface{}) *Reply {
 	return c.call(cmdScard, args...)
 }
 
 // Script calls Redis SCRIPT command. 
-func (c *Client) Script(args ...interface{}) *Reply {
+func (c *Conn) Script(args ...interface{}) *Reply {
 	return c.call(cmdScript, args...)
 }
 
 // Sdiff calls Redis SDIFF command. 
-func (c *Client) Sdiff(args ...interface{}) *Reply {
+func (c *Conn) Sdiff(args ...interface{}) *Reply {
 	return c.call(cmdSdiff, args...)
 }
 
 // Sdiffstore calls Redis SDIFFSTORE command. 
-func (c *Client) Sdiffstore(args ...interface{}) *Reply {
+func (c *Conn) Sdiffstore(args ...interface{}) *Reply {
 	return c.call(cmdSdiffstore, args...)
 }
 
 // Select calls Redis SELECT command. 
-func (c *Client) Select(args ...interface{}) *Reply {
+func (c *Conn) Select(args ...interface{}) *Reply {
 	return c.call(cmdSelect, args...)
 }
 
 // Set calls Redis SET command. 
-func (c *Client) Set(args ...interface{}) *Reply {
+func (c *Conn) Set(args ...interface{}) *Reply {
 	return c.call(cmdSet, args...)
 }
 
 // Setbit calls Redis SETBIT command. 
-func (c *Client) Setbit(args ...interface{}) *Reply {
+func (c *Conn) Setbit(args ...interface{}) *Reply {
 	return c.call(cmdSetbit, args...)
 }
 
 // Setex calls Redis SETEX command. 
-func (c *Client) Setex(args ...interface{}) *Reply {
+func (c *Conn) Setex(args ...interface{}) *Reply {
 	return c.call(cmdSetex, args...)
 }
 
 // Setnx calls Redis SETNX command. 
-func (c *Client) Setnx(args ...interface{}) *Reply {
+func (c *Conn) Setnx(args ...interface{}) *Reply {
 	return c.call(cmdSetnx, args...)
 }
 
 // Setrange calls Redis SETRANGE command. 
-func (c *Client) Setrange(args ...interface{}) *Reply {
+func (c *Conn) Setrange(args ...interface{}) *Reply {
 	return c.call(cmdSetrange, args...)
 }
 
 // Shutdown calls Redis SHUTDOWN command. 
-func (c *Client) Shutdown(args ...interface{}) *Reply {
+func (c *Conn) Shutdown(args ...interface{}) *Reply {
 	return c.call(cmdShutdown, args...)
 }
 
 // Sinter calls Redis SINTER command. 
-func (c *Client) Sinter(args ...interface{}) *Reply {
+func (c *Conn) Sinter(args ...interface{}) *Reply {
 	return c.call(cmdSinter, args...)
 }
 
 // Sinterstore calls Redis SINTERSTORE command. 
-func (c *Client) Sinterstore(args ...interface{}) *Reply {
+func (c *Conn) Sinterstore(args ...interface{}) *Reply {
 	return c.call(cmdSinterstore, args...)
 }
 
 // Sismember calls Redis SISMEMBER command. 
-func (c *Client) Sismember(args ...interface{}) *Reply {
+func (c *Conn) Sismember(args ...interface{}) *Reply {
 	return c.call(cmdSismember, args...)
 }
 
 // Slaveof calls Redis SLAVEOF command. 
-func (c *Client) Slaveof(args ...interface{}) *Reply {
+func (c *Conn) Slaveof(args ...interface{}) *Reply {
 	return c.call(cmdSlaveof, args...)
 }
 
+// Smembers calls Redis SMEMBERS command. 
+func (c *Conn) Smembers(args ...interface{}) *Reply {
+	return c.call(cmdSmembers, args...)
+}
+
 // Smove calls Redis SMOVE command. 
-func (c *Client) Smove(args ...interface{}) *Reply {
+func (c *Conn) Smove(args ...interface{}) *Reply {
 	return c.call(cmdSmove, args...)
 }
 
 // Sort calls Redis SORT command. 
-func (c *Client) Sort(args ...interface{}) *Reply {
+func (c *Conn) Sort(args ...interface{}) *Reply {
 	return c.call(cmdSort, args...)
 }
 
 // Spop calls Redis SPOP command. 
-func (c *Client) Spop(args ...interface{}) *Reply {
+func (c *Conn) Spop(args ...interface{}) *Reply {
 	return c.call(cmdSpop, args...)
 }
 
 // Srandmember calls Redis SRANDMEMBER command. 
-func (c *Client) Srandmember(args ...interface{}) *Reply {
+func (c *Conn) Srandmember(args ...interface{}) *Reply {
 	return c.call(cmdSrandmember, args...)
 }
 
 // Srem calls Redis SREM command. 
-func (c *Client) Srem(args ...interface{}) *Reply {
+func (c *Conn) Srem(args ...interface{}) *Reply {
 	return c.call(cmdSrem, args...)
 }
 
 // Strlen calls Redis STRLEN command. 
-func (c *Client) Strlen(args ...interface{}) *Reply {
+func (c *Conn) Strlen(args ...interface{}) *Reply {
 	return c.call(cmdStrlen, args...)
 }
 
 // Sunion calls Redis SUNION command. 
-func (c *Client) Sunion(args ...interface{}) *Reply {
+func (c *Conn) Sunion(args ...interface{}) *Reply {
 	return c.call(cmdSunion, args...)
 }
 
 // Sunionstore calls Redis SUNIONSTORE command. 
-func (c *Client) Sunionstore(args ...interface{}) *Reply {
+func (c *Conn) Sunionstore(args ...interface{}) *Reply {
 	return c.call(cmdSunionstore, args...)
 }
 
 // Sync calls Redis SYNC command. 
-func (c *Client) Sync(args ...interface{}) *Reply {
+func (c *Conn) Sync(args ...interface{}) *Reply {
 	return c.call(cmdSync, args...)
 }
 
 // Time calls Redis TIME command. 
-func (c *Client) Time(args ...interface{}) *Reply {
+func (c *Conn) Time(args ...interface{}) *Reply {
 	return c.call(cmdTime, args...)
 }
 
 // Ttl calls Redis TTL command. 
-func (c *Client) Ttl(args ...interface{}) *Reply {
+func (c *Conn) Ttl(args ...interface{}) *Reply {
 	return c.call(cmdTtl, args...)
 }
 
 // Type calls Redis TYPE command. 
-func (c *Client) Type(args ...interface{}) *Reply {
+func (c *Conn) Type(args ...interface{}) *Reply {
 	return c.call(cmdType, args...)
 }
 
 // Unwatch calls Redis UNWATCH command. 
-func (c *Client) Unwatch(args ...interface{}) *Reply {
+func (c *Conn) Unwatch(args ...interface{}) *Reply {
 	return c.call(cmdUnwatch, args...)
 }
 
 // Watch calls Redis WATCH command. 
-func (c *Client) Watch(args ...interface{}) *Reply {
+func (c *Conn) Watch(args ...interface{}) *Reply {
 	return c.call(cmdWatch, args...)
 }
 
 // Zadd calls Redis ZADD command. 
-func (c *Client) Zadd(args ...interface{}) *Reply {
+func (c *Conn) Zadd(args ...interface{}) *Reply {
 	return c.call(cmdZadd, args...)
 }
 
 // Zcard calls Redis ZCARD command. 
-func (c *Client) Zcard(args ...interface{}) *Reply {
+func (c *Conn) Zcard(args ...interface{}) *Reply {
 	return c.call(cmdZcard, args...)
 }
 
 // Zcount calls Redis ZCOUNT command. 
-func (c *Client) Zcount(args ...interface{}) *Reply {
+func (c *Conn) Zcount(args ...interface{}) *Reply {
 	return c.call(cmdZcount, args...)
 }
 
 // Zincrby calls Redis ZINCRBY command. 
-func (c *Client) Zincrby(args ...interface{}) *Reply {
+func (c *Conn) Zincrby(args ...interface{}) *Reply {
 	return c.call(cmdZincrby, args...)
 }
 
 // Zinterstore calls Redis ZINTERSTORE command. 
-func (c *Client) Zinterstore(args ...interface{}) *Reply {
+func (c *Conn) Zinterstore(args ...interface{}) *Reply {
 	return c.call(cmdZinterstore, args...)
 }
 
 // Zrange calls Redis ZRANGE command. 
-func (c *Client) Zrange(args ...interface{}) *Reply {
+func (c *Conn) Zrange(args ...interface{}) *Reply {
 	return c.call(cmdZrange, args...)
 }
 
 // Zrangebyscore calls Redis ZRANGEBYSCORE command. 
-func (c *Client) Zrangebyscore(args ...interface{}) *Reply {
+func (c *Conn) Zrangebyscore(args ...interface{}) *Reply {
 	return c.call(cmdZrangebyscore, args...)
 }
 
 // Zrank calls Redis ZRANK command. 
-func (c *Client) Zrank(args ...interface{}) *Reply {
+func (c *Conn) Zrank(args ...interface{}) *Reply {
 	return c.call(cmdZrank, args...)
 }
 
 // Zrem calls Redis ZREM command. 
-func (c *Client) Zrem(args ...interface{}) *Reply {
+func (c *Conn) Zrem(args ...interface{}) *Reply {
 	return c.call(cmdZrem, args...)
 }
 
 // Zremrangebyrank calls Redis ZREMRANGEBYRANK command. 
-func (c *Client) Zremrangebyrank(args ...interface{}) *Reply {
+func (c *Conn) Zremrangebyrank(args ...interface{}) *Reply {
 	return c.call(cmdZremrangebyrank, args...)
 }
 
 // Zremrangebyscore calls Redis ZREMRANGEBYSCORE command. 
-func (c *Client) Zremrangebyscore(args ...interface{}) *Reply {
+func (c *Conn) Zremrangebyscore(args ...interface{}) *Reply {
 	return c.call(cmdZremrangebyscore, args...)
 }
 
 // Zrevrange calls Redis ZREVRANGE command. 
-func (c *Client) Zrevrange(args ...interface{}) *Reply {
+func (c *Conn) Zrevrange(args ...interface{}) *Reply {
 	return c.call(cmdZrevrange, args...)
 }
 
 // Zrevrangebyscore calls Redis ZREVRANGEBYSCORE command. 
-func (c *Client) Zrevrangebyscore(args ...interface{}) *Reply {
+func (c *Conn) Zrevrangebyscore(args ...interface{}) *Reply {
 	return c.call(cmdZrevrangebyscore, args...)
 }
 
 // Zrevrank calls Redis ZREVRANK command. 
-func (c *Client) Zrevrank(args ...interface{}) *Reply {
+func (c *Conn) Zrevrank(args ...interface{}) *Reply {
 	return c.call(cmdZrevrank, args...)
 }
 
 // Zscore calls Redis ZSCORE command. 
-func (c *Client) Zscore(args ...interface{}) *Reply {
+func (c *Conn) Zscore(args ...interface{}) *Reply {
 	return c.call(cmdZscore, args...)
 }
 
 // Zunionstore calls Redis ZUNIONSTORE command. 
-func (c *Client) Zunionstore(args ...interface{}) *Reply {
+func (c *Conn) Zunionstore(args ...interface{}) *Reply {
 	return c.call(cmdZunionstore, args...)
 }
 
 // AsyncAppend calls Redis APPEND asynchronously. 
-func (c *Client) AsyncAppend(args ...interface{}) Future {
+func (c *Conn) AsyncAppend(args ...interface{}) Future {
 	return c.asyncCall(cmdAppend, args...)
 }
 
 // AsyncAsking calls Redis ASKING asynchronously. 
-func (c *Client) AsyncAsking(args ...interface{}) Future {
+func (c *Conn) AsyncAsking(args ...interface{}) Future {
 	return c.asyncCall(cmdAsking, args...)
 }
 
 // AsyncAuth calls Redis AUTH asynchronously. 
-func (c *Client) AsyncAuth(args ...interface{}) Future {
+func (c *Conn) AsyncAuth(args ...interface{}) Future {
 	return c.asyncCall(cmdAuth, args...)
 }
 
 // AsyncBgrewriteaof calls Redis BGREWRITEAOF asynchronously. 
-func (c *Client) AsyncBgrewriteaof(args ...interface{}) Future {
+func (c *Conn) AsyncBgrewriteaof(args ...interface{}) Future {
 	return c.asyncCall(cmdBgrewriteaof, args...)
 }
 
 // AsyncBgsave calls Redis BGSAVE asynchronously. 
-func (c *Client) AsyncBgsave(args ...interface{}) Future {
+func (c *Conn) AsyncBgsave(args ...interface{}) Future {
 	return c.asyncCall(cmdBgsave, args...)
 }
 
 // AsyncBitcount calls Redis BITCOUNT asynchronously. 
-func (c *Client) AsyncBitcount(args ...interface{}) Future {
+func (c *Conn) AsyncBitcount(args ...interface{}) Future {
 	return c.asyncCall(cmdBitcount, args...)
 }
 
 // AsyncBitop calls Redis BITOP asynchronously. 
-func (c *Client) AsyncBitop(args ...interface{}) Future {
+func (c *Conn) AsyncBitop(args ...interface{}) Future {
 	return c.asyncCall(cmdBitop, args...)
 }
 
 // AsyncBlpop calls Redis BLPOP asynchronously. 
-func (c *Client) AsyncBlpop(args ...interface{}) Future {
+func (c *Conn) AsyncBlpop(args ...interface{}) Future {
 	return c.asyncCall(cmdBlpop, args...)
 }
 
 // AsyncBrpop calls Redis BRPOP asynchronously. 
-func (c *Client) AsyncBrpop(args ...interface{}) Future {
+func (c *Conn) AsyncBrpop(args ...interface{}) Future {
 	return c.asyncCall(cmdBrpop, args...)
 }
 
 // AsyncBrpoplpush calls Redis BRPOPLPUSH asynchronously. 
-func (c *Client) AsyncBrpoplpush(args ...interface{}) Future {
+func (c *Conn) AsyncBrpoplpush(args ...interface{}) Future {
 	return c.asyncCall(cmdBrpoplpush, args...)
 }
 
 // AsyncClient calls Redis CLIENT asynchronously. 
-func (c *Client) AsyncClient(args ...interface{}) Future {
+func (c *Conn) AsyncClient(args ...interface{}) Future {
 	return c.asyncCall(cmdClient, args...)
 }
 
 // AsyncCluster calls Redis CLUSTER asynchronously. 
-func (c *Client) AsyncCluster(args ...interface{}) Future {
+func (c *Conn) AsyncCluster(args ...interface{}) Future {
 	return c.asyncCall(cmdCluster, args...)
 }
 
 // AsyncConfig calls Redis CONFIG asynchronously. 
-func (c *Client) AsyncConfig(args ...interface{}) Future {
+func (c *Conn) AsyncConfig(args ...interface{}) Future {
 	return c.asyncCall(cmdConfig, args...)
 }
 
 // AsyncDbsize calls Redis DBSIZE asynchronously. 
-func (c *Client) AsyncDbsize(args ...interface{}) Future {
+func (c *Conn) AsyncDbsize(args ...interface{}) Future {
 	return c.asyncCall(cmdDbsize, args...)
 }
 
 // AsyncDebug calls Redis DEBUG asynchronously. 
-func (c *Client) AsyncDebug(args ...interface{}) Future {
+func (c *Conn) AsyncDebug(args ...interface{}) Future {
 	return c.asyncCall(cmdDebug, args...)
 }
 
 // AsyncDecr calls Redis DECR asynchronously. 
-func (c *Client) AsyncDecr(args ...interface{}) Future {
+func (c *Conn) AsyncDecr(args ...interface{}) Future {
 	return c.asyncCall(cmdDecr, args...)
 }
 
 // AsyncDecrby calls Redis DECRBY asynchronously. 
-func (c *Client) AsyncDecrby(args ...interface{}) Future {
+func (c *Conn) AsyncDecrby(args ...interface{}) Future {
 	return c.asyncCall(cmdDecrby, args...)
 }
 
 // AsyncDel calls Redis DEL asynchronously. 
-func (c *Client) AsyncDel(args ...interface{}) Future {
+func (c *Conn) AsyncDel(args ...interface{}) Future {
 	return c.asyncCall(cmdDel, args...)
 }
 
 // AsyncDiscard calls Redis DISCARD asynchronously. 
-func (c *Client) AsyncDiscard(args ...interface{}) Future {
+func (c *Conn) AsyncDiscard(args ...interface{}) Future {
 	return c.asyncCall(cmdDiscard, args...)
 }
 
 // AsyncDump calls Redis DUMP asynchronously. 
-func (c *Client) AsyncDump(args ...interface{}) Future {
+func (c *Conn) AsyncDump(args ...interface{}) Future {
 	return c.asyncCall(cmdDump, args...)
 }
 
 // AsyncEcho calls Redis ECHO asynchronously. 
-func (c *Client) AsyncEcho(args ...interface{}) Future {
+func (c *Conn) AsyncEcho(args ...interface{}) Future {
 	return c.asyncCall(cmdEcho, args...)
 }
 
 // AsyncEval calls Redis EVAL asynchronously. 
-func (c *Client) AsyncEval(args ...interface{}) Future {
+func (c *Conn) AsyncEval(args ...interface{}) Future {
 	return c.asyncCall(cmdEval, args...)
 }
 
 // AsyncExec calls Redis EXEC asynchronously. 
-func (c *Client) AsyncExec(args ...interface{}) Future {
+func (c *Conn) AsyncExec(args ...interface{}) Future {
 	return c.asyncCall(cmdExec, args...)
 }
 
 // AsyncExists calls Redis EXISTS asynchronously. 
-func (c *Client) AsyncExists(args ...interface{}) Future {
+func (c *Conn) AsyncExists(args ...interface{}) Future {
 	return c.asyncCall(cmdExists, args...)
 }
 
 // AsyncExpire calls Redis EXPIRE asynchronously. 
-func (c *Client) AsyncExpire(args ...interface{}) Future {
+func (c *Conn) AsyncExpire(args ...interface{}) Future {
 	return c.asyncCall(cmdExpire, args...)
 }
 
 // AsyncExpireat calls Redis EXPIREAT asynchronously. 
-func (c *Client) AsyncExpireat(args ...interface{}) Future {
+func (c *Conn) AsyncExpireat(args ...interface{}) Future {
 	return c.asyncCall(cmdExpireat, args...)
 }
 
 // AsyncFlushall calls Redis FLUSHALL asynchronously. 
-func (c *Client) AsyncFlushall(args ...interface{}) Future {
+func (c *Conn) AsyncFlushall(args ...interface{}) Future {
 	return c.asyncCall(cmdFlushall, args...)
 }
 
 // AsyncFlushdb calls Redis FLUSHDB asynchronously. 
-func (c *Client) AsyncFlushdb(args ...interface{}) Future {
+func (c *Conn) AsyncFlushdb(args ...interface{}) Future {
 	return c.asyncCall(cmdFlushdb, args...)
 }
 
 // AsyncGet calls Redis GET asynchronously. 
-func (c *Client) AsyncGet(args ...interface{}) Future {
+func (c *Conn) AsyncGet(args ...interface{}) Future {
 	return c.asyncCall(cmdGet, args...)
 }
 
 // AsyncGetbit calls Redis GETBIT asynchronously. 
-func (c *Client) AsyncGetbit(args ...interface{}) Future {
+func (c *Conn) AsyncGetbit(args ...interface{}) Future {
 	return c.asyncCall(cmdGetbit, args...)
 }
 
 // AsyncGetrange calls Redis GETRANGE asynchronously. 
-func (c *Client) AsyncGetrange(args ...interface{}) Future {
+func (c *Conn) AsyncGetrange(args ...interface{}) Future {
 	return c.asyncCall(cmdGetrange, args...)
 }
 
 // AsyncGetset calls Redis GETSET asynchronously. 
-func (c *Client) AsyncGetset(args ...interface{}) Future {
+func (c *Conn) AsyncGetset(args ...interface{}) Future {
 	return c.asyncCall(cmdGetset, args...)
 }
 
 // AsyncHdel calls Redis HDEL asynchronously. 
-func (c *Client) AsyncHdel(args ...interface{}) Future {
+func (c *Conn) AsyncHdel(args ...interface{}) Future {
 	return c.asyncCall(cmdHdel, args...)
 }
 
 // AsyncHexists calls Redis HEXISTS asynchronously. 
-func (c *Client) AsyncHexists(args ...interface{}) Future {
+func (c *Conn) AsyncHexists(args ...interface{}) Future {
 	return c.asyncCall(cmdHexists, args...)
 }
 
 // AsyncHget calls Redis HGET asynchronously. 
-func (c *Client) AsyncHget(args ...interface{}) Future {
+func (c *Conn) AsyncHget(args ...interface{}) Future {
 	return c.asyncCall(cmdHget, args...)
 }
 
 // AsyncHgetall calls Redis HGETALL asynchronously. 
-func (c *Client) AsyncHgetall(args ...interface{}) Future {
+func (c *Conn) AsyncHgetall(args ...interface{}) Future {
 	return c.asyncCall(cmdHgetall, args...)
 }
 
 // AsyncHincrby calls Redis HINCRBY asynchronously. 
-func (c *Client) AsyncHincrby(args ...interface{}) Future {
+func (c *Conn) AsyncHincrby(args ...interface{}) Future {
 	return c.asyncCall(cmdHincrby, args...)
 }
 
 // AsyncHincrbyfloat calls Redis HINCRBYFLOAT asynchronously. 
-func (c *Client) AsyncHincrbyfloat(args ...interface{}) Future {
+func (c *Conn) AsyncHincrbyfloat(args ...interface{}) Future {
 	return c.asyncCall(cmdHincrbyfloat, args...)
 }
 
 // AsyncHkeys calls Redis HKEYS asynchronously. 
-func (c *Client) AsyncHkeys(args ...interface{}) Future {
+func (c *Conn) AsyncHkeys(args ...interface{}) Future {
 	return c.asyncCall(cmdHkeys, args...)
 }
 
 // AsyncHlen calls Redis HLEN asynchronously. 
-func (c *Client) AsyncHlen(args ...interface{}) Future {
+func (c *Conn) AsyncHlen(args ...interface{}) Future {
 	return c.asyncCall(cmdHlen, args...)
 }
 
 // AsyncHmget calls Redis HMGET asynchronously. 
-func (c *Client) AsyncHmget(args ...interface{}) Future {
+func (c *Conn) AsyncHmget(args ...interface{}) Future {
 	return c.asyncCall(cmdHmget, args...)
 }
 
 // AsyncHmset calls Redis HMSET asynchronously. 
-func (c *Client) AsyncHmset(args ...interface{}) Future {
+func (c *Conn) AsyncHmset(args ...interface{}) Future {
 	return c.asyncCall(cmdHmset, args...)
 }
 
 // AsyncHset calls Redis HSET asynchronously. 
-func (c *Client) AsyncHset(args ...interface{}) Future {
+func (c *Conn) AsyncHset(args ...interface{}) Future {
 	return c.asyncCall(cmdHset, args...)
 }
 
 // AsyncHsetnx calls Redis HSETNX asynchronously. 
-func (c *Client) AsyncHsetnx(args ...interface{}) Future {
+func (c *Conn) AsyncHsetnx(args ...interface{}) Future {
 	return c.asyncCall(cmdHsetnx, args...)
 }
 
 // AsyncHvals calls Redis HVALS asynchronously. 
-func (c *Client) AsyncHvals(args ...interface{}) Future {
+func (c *Conn) AsyncHvals(args ...interface{}) Future {
 	return c.asyncCall(cmdHvals, args...)
 }
 
 // AsyncIncr calls Redis INCR asynchronously. 
-func (c *Client) AsyncIncr(args ...interface{}) Future {
+func (c *Conn) AsyncIncr(args ...interface{}) Future {
 	return c.asyncCall(cmdIncr, args...)
 }
 
 // AsyncIncrby calls Redis INCRBY asynchronously. 
-func (c *Client) AsyncIncrby(args ...interface{}) Future {
+func (c *Conn) AsyncIncrby(args ...interface{}) Future {
 	return c.asyncCall(cmdIncrby, args...)
 }
 
 // AsyncIncrbyfloat calls Redis INCRBYFLOAT asynchronously. 
-func (c *Client) AsyncIncrbyfloat(args ...interface{}) Future {
+func (c *Conn) AsyncIncrbyfloat(args ...interface{}) Future {
 	return c.asyncCall(cmdIncrbyfloat, args...)
 }
 
 // AsyncInfo calls Redis INFO asynchronously. 
-func (c *Client) AsyncInfo(args ...interface{}) Future {
+func (c *Conn) AsyncInfo(args ...interface{}) Future {
 	return c.asyncCall(cmdInfo, args...)
 }
 
 // AsyncKeys calls Redis KEYS asynchronously. 
-func (c *Client) AsyncKeys(args ...interface{}) Future {
+func (c *Conn) AsyncKeys(args ...interface{}) Future {
 	return c.asyncCall(cmdKeys, args...)
 }
 
 // AsyncLastsave calls Redis LASTSAVE asynchronously. 
-func (c *Client) AsyncLastsave(args ...interface{}) Future {
+func (c *Conn) AsyncLastsave(args ...interface{}) Future {
 	return c.asyncCall(cmdLastsave, args...)
 }
 
 // AsyncLindex calls Redis LINDEX asynchronously. 
-func (c *Client) AsyncLindex(args ...interface{}) Future {
+func (c *Conn) AsyncLindex(args ...interface{}) Future {
 	return c.asyncCall(cmdLindex, args...)
 }
 
 // AsyncLinsert calls Redis LINSERT asynchronously. 
-func (c *Client) AsyncLinsert(args ...interface{}) Future {
+func (c *Conn) AsyncLinsert(args ...interface{}) Future {
 	return c.asyncCall(cmdLinsert, args...)
 }
 
 // AsyncLlen calls Redis LLEN asynchronously. 
-func (c *Client) AsyncLlen(args ...interface{}) Future {
+func (c *Conn) AsyncLlen(args ...interface{}) Future {
 	return c.asyncCall(cmdLlen, args...)
 }
 
 // AsyncLpop calls Redis LPOP asynchronously. 
-func (c *Client) AsyncLpop(args ...interface{}) Future {
+func (c *Conn) AsyncLpop(args ...interface{}) Future {
 	return c.asyncCall(cmdLpop, args...)
 }
 
 // AsyncLpush calls Redis LPUSH asynchronously. 
-func (c *Client) AsyncLpush(args ...interface{}) Future {
+func (c *Conn) AsyncLpush(args ...interface{}) Future {
 	return c.asyncCall(cmdLpush, args...)
 }
 
 // AsyncLpushx calls Redis LPUSHX asynchronously. 
-func (c *Client) AsyncLpushx(args ...interface{}) Future {
+func (c *Conn) AsyncLpushx(args ...interface{}) Future {
 	return c.asyncCall(cmdLpushx, args...)
 }
 
 // AsyncLrange calls Redis LRANGE asynchronously. 
-func (c *Client) AsyncLrange(args ...interface{}) Future {
+func (c *Conn) AsyncLrange(args ...interface{}) Future {
 	return c.asyncCall(cmdLrange, args...)
 }
 
 // AsyncLrem calls Redis LREM asynchronously. 
-func (c *Client) AsyncLrem(args ...interface{}) Future {
+func (c *Conn) AsyncLrem(args ...interface{}) Future {
 	return c.asyncCall(cmdLrem, args...)
 }
 
 // AsyncLset calls Redis LSET asynchronously. 
-func (c *Client) AsyncLset(args ...interface{}) Future {
+func (c *Conn) AsyncLset(args ...interface{}) Future {
 	return c.asyncCall(cmdLset, args...)
 }
 
 // AsyncLtrim calls Redis LTRIM asynchronously. 
-func (c *Client) AsyncLtrim(args ...interface{}) Future {
+func (c *Conn) AsyncLtrim(args ...interface{}) Future {
 	return c.asyncCall(cmdLtrim, args...)
 }
 
 // AsyncMget calls Redis MGET asynchronously. 
-func (c *Client) AsyncMget(args ...interface{}) Future {
+func (c *Conn) AsyncMget(args ...interface{}) Future {
 	return c.asyncCall(cmdMget, args...)
 }
 
 // AsyncMigrate calls Redis MIGRATE asynchronously. 
-func (c *Client) AsyncMigrate(args ...interface{}) Future {
+func (c *Conn) AsyncMigrate(args ...interface{}) Future {
 	return c.asyncCall(cmdMigrate, args...)
 }
 
 // AsyncMonitor calls Redis MONITOR asynchronously. 
-func (c *Client) AsyncMonitor(args ...interface{}) Future {
+func (c *Conn) AsyncMonitor(args ...interface{}) Future {
 	return c.asyncCall(cmdMonitor, args...)
 }
 
 // AsyncMove calls Redis MOVE asynchronously. 
-func (c *Client) AsyncMove(args ...interface{}) Future {
+func (c *Conn) AsyncMove(args ...interface{}) Future {
 	return c.asyncCall(cmdMove, args...)
 }
 
 // AsyncMset calls Redis MSET asynchronously. 
-func (c *Client) AsyncMset(args ...interface{}) Future {
+func (c *Conn) AsyncMset(args ...interface{}) Future {
 	return c.asyncCall(cmdMset, args...)
 }
 
 // AsyncMsetnx calls Redis MSETNX asynchronously. 
-func (c *Client) AsyncMsetnx(args ...interface{}) Future {
+func (c *Conn) AsyncMsetnx(args ...interface{}) Future {
 	return c.asyncCall(cmdMsetnx, args...)
 }
 
 // AsyncMulti calls Redis MULTI asynchronously. 
-func (c *Client) AsyncMulti(args ...interface{}) Future {
+func (c *Conn) AsyncMulti(args ...interface{}) Future {
 	return c.asyncCall(cmdMulti, args...)
 }
 
 // AsyncObject calls Redis OBJECT asynchronously. 
-func (c *Client) AsyncObject(args ...interface{}) Future {
+func (c *Conn) AsyncObject(args ...interface{}) Future {
 	return c.asyncCall(cmdObject, args...)
 }
 
 // AsyncPersist calls Redis PERSIST asynchronously. 
-func (c *Client) AsyncPersist(args ...interface{}) Future {
+func (c *Conn) AsyncPersist(args ...interface{}) Future {
 	return c.asyncCall(cmdPersist, args...)
 }
 
 // AsyncPexpire calls Redis PEXPIRE asynchronously. 
-func (c *Client) AsyncPexpire(args ...interface{}) Future {
+func (c *Conn) AsyncPexpire(args ...interface{}) Future {
 	return c.asyncCall(cmdPexpire, args...)
 }
 
 // AsyncPexpireat calls Redis PEXPIREAT asynchronously. 
-func (c *Client) AsyncPexpireat(args ...interface{}) Future {
+func (c *Conn) AsyncPexpireat(args ...interface{}) Future {
 	return c.asyncCall(cmdPexpireat, args...)
 }
 
 // AsyncPing calls Redis PING asynchronously. 
-func (c *Client) AsyncPing(args ...interface{}) Future {
+func (c *Conn) AsyncPing(args ...interface{}) Future {
 	return c.asyncCall(cmdPing, args...)
 }
 
 // AsyncPsetex calls Redis PSETEX asynchronously. 
-func (c *Client) AsyncPsetex(args ...interface{}) Future {
+func (c *Conn) AsyncPsetex(args ...interface{}) Future {
 	return c.asyncCall(cmdPsetex, args...)
 }
 
 // AsyncPttl calls Redis PTTL asynchronously. 
-func (c *Client) AsyncPttl(args ...interface{}) Future {
+func (c *Conn) AsyncPttl(args ...interface{}) Future {
 	return c.asyncCall(cmdPttl, args...)
 }
 
 // AsyncPublish calls Redis PUBLISH asynchronously. 
-func (c *Client) AsyncPublish(args ...interface{}) Future {
+func (c *Conn) AsyncPublish(args ...interface{}) Future {
 	return c.asyncCall(cmdPublish, args...)
 }
 
 // AsyncRandomkey calls Redis RANDOMKEY asynchronously. 
-func (c *Client) AsyncRandomkey(args ...interface{}) Future {
+func (c *Conn) AsyncRandomkey(args ...interface{}) Future {
 	return c.asyncCall(cmdRandomkey, args...)
 }
 
 // AsyncRename calls Redis RENAME asynchronously. 
-func (c *Client) AsyncRename(args ...interface{}) Future {
+func (c *Conn) AsyncRename(args ...interface{}) Future {
 	return c.asyncCall(cmdRename, args...)
 }
 
 // AsyncRenamenx calls Redis RENAMENX asynchronously. 
-func (c *Client) AsyncRenamenx(args ...interface{}) Future {
+func (c *Conn) AsyncRenamenx(args ...interface{}) Future {
 	return c.asyncCall(cmdRenamenx, args...)
 }
 
 // AsyncReplconf calls Redis REPLCONF asynchronously. 
-func (c *Client) AsyncReplconf(args ...interface{}) Future {
+func (c *Conn) AsyncReplconf(args ...interface{}) Future {
 	return c.asyncCall(cmdReplconf, args...)
 }
 
 // AsyncRestore calls Redis RESTORE asynchronously. 
-func (c *Client) AsyncRestore(args ...interface{}) Future {
+func (c *Conn) AsyncRestore(args ...interface{}) Future {
 	return c.asyncCall(cmdRestore, args...)
 }
 
 // AsyncRpop calls Redis RPOP asynchronously. 
-func (c *Client) AsyncRpop(args ...interface{}) Future {
+func (c *Conn) AsyncRpop(args ...interface{}) Future {
 	return c.asyncCall(cmdRpop, args...)
 }
 
 // AsyncRpoplpush calls Redis RPOPLPUSH asynchronously. 
-func (c *Client) AsyncRpoplpush(args ...interface{}) Future {
+func (c *Conn) AsyncRpoplpush(args ...interface{}) Future {
 	return c.asyncCall(cmdRpoplpush, args...)
 }
 
 // AsyncRpush calls Redis RPUSH asynchronously. 
-func (c *Client) AsyncRpush(args ...interface{}) Future {
+func (c *Conn) AsyncRpush(args ...interface{}) Future {
 	return c.asyncCall(cmdRpush, args...)
 }
 
 // AsyncRpushx calls Redis RPUSHX asynchronously. 
-func (c *Client) AsyncRpushx(args ...interface{}) Future {
+func (c *Conn) AsyncRpushx(args ...interface{}) Future {
 	return c.asyncCall(cmdRpushx, args...)
 }
 
 // AsyncSadd calls Redis SADD asynchronously. 
-func (c *Client) AsyncSadd(args ...interface{}) Future {
+func (c *Conn) AsyncSadd(args ...interface{}) Future {
 	return c.asyncCall(cmdSadd, args...)
 }
 
 // AsyncSave calls Redis SAVE asynchronously. 
-func (c *Client) AsyncSave(args ...interface{}) Future {
+func (c *Conn) AsyncSave(args ...interface{}) Future {
 	return c.asyncCall(cmdSave, args...)
 }
 
 // AsyncScard calls Redis SCARD asynchronously. 
-func (c *Client) AsyncScard(args ...interface{}) Future {
+func (c *Conn) AsyncScard(args ...interface{}) Future {
 	return c.asyncCall(cmdScard, args...)
 }
 
 // AsyncScript calls Redis SCRIPT asynchronously. 
-func (c *Client) AsyncScript(args ...interface{}) Future {
+func (c *Conn) AsyncScript(args ...interface{}) Future {
 	return c.asyncCall(cmdScript, args...)
 }
 
 // AsyncSdiff calls Redis SDIFF asynchronously. 
-func (c *Client) AsyncSdiff(args ...interface{}) Future {
+func (c *Conn) AsyncSdiff(args ...interface{}) Future {
 	return c.asyncCall(cmdSdiff, args...)
 }
 
 // AsyncSdiffstore calls Redis SDIFFSTORE asynchronously. 
-func (c *Client) AsyncSdiffstore(args ...interface{}) Future {
+func (c *Conn) AsyncSdiffstore(args ...interface{}) Future {
 	return c.asyncCall(cmdSdiffstore, args...)
 }
 
 // AsyncSelect calls Redis SELECT asynchronously. 
-func (c *Client) AsyncSelect(args ...interface{}) Future {
+func (c *Conn) AsyncSelect(args ...interface{}) Future {
 	return c.asyncCall(cmdSelect, args...)
 }
 
 // AsyncSet calls Redis SET asynchronously. 
-func (c *Client) AsyncSet(args ...interface{}) Future {
+func (c *Conn) AsyncSet(args ...interface{}) Future {
 	return c.asyncCall(cmdSet, args...)
 }
 
 // AsyncSetbit calls Redis SETBIT asynchronously. 
-func (c *Client) AsyncSetbit(args ...interface{}) Future {
+func (c *Conn) AsyncSetbit(args ...interface{}) Future {
 	return c.asyncCall(cmdSetbit, args...)
 }
 
 // AsyncSetex calls Redis SETEX asynchronously. 
-func (c *Client) AsyncSetex(args ...interface{}) Future {
+func (c *Conn) AsyncSetex(args ...interface{}) Future {
 	return c.asyncCall(cmdSetex, args...)
 }
 
 // AsyncSetnx calls Redis SETNX asynchronously. 
-func (c *Client) AsyncSetnx(args ...interface{}) Future {
+func (c *Conn) AsyncSetnx(args ...interface{}) Future {
 	return c.asyncCall(cmdSetnx, args...)
 }
 
 // AsyncSetrange calls Redis SETRANGE asynchronously. 
-func (c *Client) AsyncSetrange(args ...interface{}) Future {
+func (c *Conn) AsyncSetrange(args ...interface{}) Future {
 	return c.asyncCall(cmdSetrange, args...)
 }
 
 // AsyncShutdown calls Redis SHUTDOWN asynchronously. 
-func (c *Client) AsyncShutdown(args ...interface{}) Future {
+func (c *Conn) AsyncShutdown(args ...interface{}) Future {
 	return c.asyncCall(cmdShutdown, args...)
 }
 
 // AsyncSinter calls Redis SINTER asynchronously. 
-func (c *Client) AsyncSinter(args ...interface{}) Future {
+func (c *Conn) AsyncSinter(args ...interface{}) Future {
 	return c.asyncCall(cmdSinter, args...)
 }
 
 // AsyncSinterstore calls Redis SINTERSTORE asynchronously. 
-func (c *Client) AsyncSinterstore(args ...interface{}) Future {
+func (c *Conn) AsyncSinterstore(args ...interface{}) Future {
 	return c.asyncCall(cmdSinterstore, args...)
 }
 
 // AsyncSismember calls Redis SISMEMBER asynchronously. 
-func (c *Client) AsyncSismember(args ...interface{}) Future {
+func (c *Conn) AsyncSismember(args ...interface{}) Future {
 	return c.asyncCall(cmdSismember, args...)
 }
 
 // AsyncSlaveof calls Redis SLAVEOF asynchronously. 
-func (c *Client) AsyncSlaveof(args ...interface{}) Future {
+func (c *Conn) AsyncSlaveof(args ...interface{}) Future {
 	return c.asyncCall(cmdSlaveof, args...)
 }
 
+// AsyncSmembers calls Redis SMEMBERS asynchronously. 
+func (c *Conn) AsyncSmembers(args ...interface{}) Future {
+	return c.asyncCall(cmdSmembers, args...)
+}
+
 // AsyncSmove calls Redis SMOVE asynchronously. 
-func (c *Client) AsyncSmove(args ...interface{}) Future {
+func (c *Conn) AsyncSmove(args ...interface{}) Future {
 	return c.asyncCall(cmdSmove, args...)
 }
 
 // AsyncSort calls Redis SORT asynchronously. 
-func (c *Client) AsyncSort(args ...interface{}) Future {
+func (c *Conn) AsyncSort(args ...interface{}) Future {
 	return c.asyncCall(cmdSort, args...)
 }
 
 // AsyncSpop calls Redis SPOP asynchronously. 
-func (c *Client) AsyncSpop(args ...interface{}) Future {
+func (c *Conn) AsyncSpop(args ...interface{}) Future {
 	return c.asyncCall(cmdSpop, args...)
 }
 
 // AsyncSrandmember calls Redis SRANDMEMBER asynchronously. 
-func (c *Client) AsyncSrandmember(args ...interface{}) Future {
+func (c *Conn) AsyncSrandmember(args ...interface{}) Future {
 	return c.asyncCall(cmdSrandmember, args...)
 }
 
 // AsyncSrem calls Redis SREM asynchronously. 
-func (c *Client) AsyncSrem(args ...interface{}) Future {
+func (c *Conn) AsyncSrem(args ...interface{}) Future {
 	return c.asyncCall(cmdSrem, args...)
 }
 
 // AsyncStrlen calls Redis STRLEN asynchronously. 
-func (c *Client) AsyncStrlen(args ...interface{}) Future {
+func (c *Conn) AsyncStrlen(args ...interface{}) Future {
 	return c.asyncCall(cmdStrlen, args...)
 }
 
 // AsyncSunion calls Redis SUNION asynchronously. 
-func (c *Client) AsyncSunion(args ...interface{}) Future {
+func (c *Conn) AsyncSunion(args ...interface{}) Future {
 	return c.asyncCall(cmdSunion, args...)
 }
 
 // AsyncSunionstore calls Redis SUNIONSTORE asynchronously. 
-func (c *Client) AsyncSunionstore(args ...interface{}) Future {
+func (c *Conn) AsyncSunionstore(args ...interface{}) Future {
 	return c.asyncCall(cmdSunionstore, args...)
 }
 
 // AsyncSync calls Redis SYNC asynchronously. 
-func (c *Client) AsyncSync(args ...interface{}) Future {
+func (c *Conn) AsyncSync(args ...interface{}) Future {
 	return c.asyncCall(cmdSync, args...)
 }
 
 // AsyncTime calls Redis TIME asynchronously. 
-func (c *Client) AsyncTime(args ...interface{}) Future {
+func (c *Conn) AsyncTime(args ...interface{}) Future {
 	return c.asyncCall(cmdTime, args...)
 }
 
 // AsyncTtl calls Redis TTL asynchronously. 
-func (c *Client) AsyncTtl(args ...interface{}) Future {
+func (c *Conn) AsyncTtl(args ...interface{}) Future {
 	return c.asyncCall(cmdTtl, args...)
 }
 
 // AsyncType calls Redis TYPE asynchronously. 
-func (c *Client) AsyncType(args ...interface{}) Future {
+func (c *Conn) AsyncType(args ...interface{}) Future {
 	return c.asyncCall(cmdType, args...)
 }
 
 // AsyncUnwatch calls Redis UNWATCH asynchronously. 
-func (c *Client) AsyncUnwatch(args ...interface{}) Future {
+func (c *Conn) AsyncUnwatch(args ...interface{}) Future {
 	return c.asyncCall(cmdUnwatch, args...)
 }
 
 // AsyncWatch calls Redis WATCH asynchronously. 
-func (c *Client) AsyncWatch(args ...interface{}) Future {
+func (c *Conn) AsyncWatch(args ...interface{}) Future {
 	return c.asyncCall(cmdWatch, args...)
 }
 
 // AsyncZadd calls Redis ZADD asynchronously. 
-func (c *Client) AsyncZadd(args ...interface{}) Future {
+func (c *Conn) AsyncZadd(args ...interface{}) Future {
 	return c.asyncCall(cmdZadd, args...)
 }
 
 // AsyncZcard calls Redis ZCARD asynchronously. 
-func (c *Client) AsyncZcard(args ...interface{}) Future {
+func (c *Conn) AsyncZcard(args ...interface{}) Future {
 	return c.asyncCall(cmdZcard, args...)
 }
 
 // AsyncZcount calls Redis ZCOUNT asynchronously. 
-func (c *Client) AsyncZcount(args ...interface{}) Future {
+func (c *Conn) AsyncZcount(args ...interface{}) Future {
 	return c.asyncCall(cmdZcount, args...)
 }
 
 // AsyncZincrby calls Redis ZINCRBY asynchronously. 
-func (c *Client) AsyncZincrby(args ...interface{}) Future {
+func (c *Conn) AsyncZincrby(args ...interface{}) Future {
 	return c.asyncCall(cmdZincrby, args...)
 }
 
 // AsyncZinterstore calls Redis ZINTERSTORE asynchronously. 
-func (c *Client) AsyncZinterstore(args ...interface{}) Future {
+func (c *Conn) AsyncZinterstore(args ...interface{}) Future {
 	return c.asyncCall(cmdZinterstore, args...)
 }
 
 // AsyncZrange calls Redis ZRANGE asynchronously. 
-func (c *Client) AsyncZrange(args ...interface{}) Future {
+func (c *Conn) AsyncZrange(args ...interface{}) Future {
 	return c.asyncCall(cmdZrange, args...)
 }
 
 // AsyncZrangebyscore calls Redis ZRANGEBYSCORE asynchronously. 
-func (c *Client) AsyncZrangebyscore(args ...interface{}) Future {
+func (c *Conn) AsyncZrangebyscore(args ...interface{}) Future {
 	return c.asyncCall(cmdZrangebyscore, args...)
 }
 
 // AsyncZrank calls Redis ZRANK asynchronously. 
-func (c *Client) AsyncZrank(args ...interface{}) Future {
+func (c *Conn) AsyncZrank(args ...interface{}) Future {
 	return c.asyncCall(cmdZrank, args...)
 }
 
 // AsyncZrem calls Redis ZREM asynchronously. 
-func (c *Client) AsyncZrem(args ...interface{}) Future {
+func (c *Conn) AsyncZrem(args ...interface{}) Future {
 	return c.asyncCall(cmdZrem, args...)
 }
 
 // AsyncZremrangebyrank calls Redis ZREMRANGEBYRANK asynchronously. 
-func (c *Client) AsyncZremrangebyrank(args ...interface{}) Future {
+func (c *Conn) AsyncZremrangebyrank(args ...interface{}) Future {
 	return c.asyncCall(cmdZremrangebyrank, args...)
 }
 
 // AsyncZremrangebyscore calls Redis ZREMRANGEBYSCORE asynchronously. 
-func (c *Client) AsyncZremrangebyscore(args ...interface{}) Future {
+func (c *Conn) AsyncZremrangebyscore(args ...interface{}) Future {
 	return c.asyncCall(cmdZremrangebyscore, args...)
 }
 
 // AsyncZrevrange calls Redis ZREVRANGE asynchronously. 
-func (c *Client) AsyncZrevrange(args ...interface{}) Future {
+func (c *Conn) AsyncZrevrange(args ...interface{}) Future {
 	return c.asyncCall(cmdZrevrange, args...)
 }
 
 // AsyncZrevrangebyscore calls Redis ZREVRANGEBYSCORE asynchronously. 
-func (c *Client) AsyncZrevrangebyscore(args ...interface{}) Future {
+func (c *Conn) AsyncZrevrangebyscore(args ...interface{}) Future {
 	return c.asyncCall(cmdZrevrangebyscore, args...)
 }
 
 // AsyncZrevrank calls Redis ZREVRANK asynchronously. 
-func (c *Client) AsyncZrevrank(args ...interface{}) Future {
+func (c *Conn) AsyncZrevrank(args ...interface{}) Future {
 	return c.asyncCall(cmdZrevrank, args...)
 }
 
 // AsyncZscore calls Redis ZSCORE asynchronously. 
-func (c *Client) AsyncZscore(args ...interface{}) Future {
+func (c *Conn) AsyncZscore(args ...interface{}) Future {
 	return c.asyncCall(cmdZscore, args...)
 }
 
 // AsyncZunionstore calls Redis ZUNIONSTORE asynchronously. 
-func (c *Client) AsyncZunionstore(args ...interface{}) Future {
+func (c *Conn) AsyncZunionstore(args ...interface{}) Future {
 	return c.asyncCall(cmdZunionstore, args...)
 }
 
@@ -1969,6 +1980,11 @@ func (mc *MultiCall) Sismember(args ...interface{}) {
 // Slaveof queues a Redis SLAVEOF command for later execution. 
 func (mc *MultiCall) Slaveof(args ...interface{}) {
 	mc.call(cmdSlaveof, args...)
+}
+
+// Smembers queues a Redis SMEMBERS command for later execution. 
+func (mc *MultiCall) Smembers(args ...interface{}) {
+	mc.call(cmdSmembers, args...)
 }
 
 // Smove queues a Redis SMOVE command for later execution. 

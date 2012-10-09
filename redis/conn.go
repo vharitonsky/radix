@@ -7,7 +7,6 @@ import (
 	"net"
 	"regexp"
 	"strconv"
-	"sync/atomic"
 	"time"
 )
 
@@ -20,40 +19,30 @@ type call struct {
 	args []interface{}
 }
 
-//* conn
+//* Conn
 
-// conn describes a Redis connection.
-type conn struct {
+// Conn a Redis client.
+// Multiple goroutines should not invoke methods on a Conn simultaneously. 
+type Conn struct {
 	conn          net.Conn
 	reader        *bufio.Reader
-	closed_       int32 // manipulated with atomic primitives
-	noReadTimeout bool  // toggle disabling of read timeout
-	config        *Config
+	config        Config
+	submode bool // are we in subscription mode?
+	subs []string // subscriptions
+	psubs []string // pattern subscriptions
 }
 
-func newConn(config *Config) (c *conn, err *Error) {
-	c = &conn{
-		closed_: 1, // closed by default
-		config:  config,
-	}
-
-	if err = c.init(); err != nil {
-		c.close()
-		c = nil
-	}
-
-	return
-}
-
-// init is helper function for newConn
-func (c *conn) init() *Error {
+// NewConn creates a new Conn.
+func NewConn(config Config)  (*Conn, *Error) {
 	var err error
+	c := new(Conn)
+	c.config = config
 
 	// Establish a connection.
 	c.conn, err = net.Dial(c.config.Network, c.config.Address)
 	if err != nil {
-		c.close()
-		return newError(err.Error(), ErrorConnection)
+		c.Close()
+		return nil, newError(err.Error(), ErrorConnection)
 	}
 	c.reader = bufio.NewReaderSize(c.conn, 4096)
 
@@ -61,8 +50,8 @@ func (c *conn) init() *Error {
 	if c.config.Password != "" {
 		r := c.call(cmdAuth, c.config.Password)
 		if r.Err != nil {
-			c.close()
-			return newErrorExt("authentication failed", r.Err, ErrorAuth)
+			c.Close()
+			return nil, newErrorExt("authentication failed", r.Err, ErrorAuth)
 		}
 	}
 
@@ -71,7 +60,7 @@ func (c *conn) init() *Error {
 	if r.Err != nil {
 		if c.config.RetryLoading && r.Err.Test(ErrorLoading) {
 			// Attempt to read remaining loading time with INFO and sleep that time.
-			info, err := c.infoMap()
+			info, err := c.InfoMap()
 			if err == nil {
 				if _, ok := info["loading_eta_seconds"]; ok {
 					eta, err := strconv.Atoi(info["loading_eta_seconds"])
@@ -93,44 +82,81 @@ func (c *conn) init() *Error {
 		}
 
 	SelectFail:
-		c.close()
-		return newErrorExt("selecting database failed", r.Err)
+		c.Close()
+		return nil, newErrorExt("selecting database failed", r.Err)
 	}
 
-	c.closed_ = 0
-	return nil
+	return c, nil
 }
 
-// call calls a Redis command.
-func (c *conn) call(cmd Cmd, args ...interface{}) (r *Reply) {
-	if err := c.writeRequest(call{cmd, args}); err != nil {
-		r = &Reply{Type: ReplyError, Err: err}
-	} else {
-		r = c.read()
+// Close closes the connection.
+// Any blocked operations will be unblocked and return errors.
+func (c *Conn) Close() error {
+	return c.conn.Close()
+}
+
+// Call calls the given Redis command.
+func (c *Conn) Call(cmd string, args ...interface{}) *Reply {
+	return c.call(Cmd(cmd), args...)
+}
+
+// AsyncCall calls the given Redis command asynchronously.
+func (c *Conn) AsyncCall(cmd string, args ...interface{}) Future {
+	return c.asyncCall(Cmd(cmd), args...)
+}
+
+// MultiCall executes the given MultiCall.
+// Multicall reply is guaranteed to have the same number of sub-replies as calls, if it succeeds.
+func (c *Conn) MultiCall(f func(*MultiCall)) *Reply {
+	return newMultiCall(false, c).process(f)
+}
+
+// Transaction performs a simple transaction.
+// Simple transaction is a multi command that is wrapped in a MULTI-EXEC block.
+// For complex transactions with WATCH, UNWATCH or DISCARD commands use MultiCall.
+// Transaction reply is guaranteed to have the same number of sub-replies as calls, if it succeeds.
+func (c *Conn) Transaction(f func(*MultiCall)) *Reply {
+	return newMultiCall(true, c).process(f)
+}
+
+// AsyncMultiCall calls an asynchronous MultiCall.
+func (c *Conn) AsyncMultiCall(mc func(*MultiCall)) Future {
+	f := newFuture()
+	go func() {
+		f <- c.MultiCall(mc)
+	}()
+	return f
+}
+
+// AsyncTransaction performs a simple asynchronous transaction.
+func (c *Conn) AsyncTransaction(mc func(*MultiCall)) Future {
+	f := newFuture()
+	go func() {
+		f <- c.Transaction(mc)
+	}()
+	return f
+}
+/*
+// Subscription returns a new Subscription instance with the given message handler callback or
+// an error. The message handler is called whenever a new message arrives.
+// Subscriptions create their own dedicated connections,
+// they do not pull connections from the connection pool.
+func (c *Conn) Subscription(msgHdlr func(msg *Message)) (*Subscription, *Error) {
+	if msgHdlr == nil {
+		panic(errmsg("message handler must not be nil"))
 	}
 
-	return r
-}
-
-// multiCall calls multiple Redis commands.
-func (c *conn) multiCall(cmds []call) (r *Reply) {
-	r = new(Reply)
-	if err := c.writeRequest(cmds...); err == nil {
-		r.Type = ReplyMulti
-		r.Elems = make([]*Reply, len(cmds))
-		for i := range cmds {
-			reply := c.read()
-			r.Elems[i] = reply
-		}
-	} else {
-		r.Err = newError(err.Error())
+	sub, err := newSubscription(&c.config, msgHdlr)
+	if err != nil {
+		return nil, err
 	}
 
-	return r
+	return sub, nil
 }
-
-// infoMap calls the INFO command, parses and returns the results as a map[string]string or an error. 
-func (c *conn) infoMap() (map[string]string, error) {
+*/
+// InfoMap calls the INFO command, parses and returns the results as a map[string]string or an error. 
+// Use Info method for fetching the unparsed INFO results.
+func (c *Conn) InfoMap() (map[string]string, error) {
 	info := make(map[string]string)
 	r := c.call(cmdInfo)
 
@@ -150,8 +176,42 @@ func (c *conn) infoMap() (map[string]string, error) {
 	return info, nil
 }
 
+//* Private methods
+
+func (c *Conn) call(cmd Cmd, args ...interface{}) *Reply {
+	if err := c.writeRequest(call{cmd, args}); err != nil {
+		return &Reply{Type: ReplyError, Err: err}
+	} 
+	return c.read()
+}
+
+func (c *Conn) asyncCall(cmd Cmd, args ...interface{}) Future {
+	f := newFuture()
+	go func() {
+		f <- c.call(cmd, args...)
+	}()
+	return f
+}
+
+// multiCall calls multiple Redis commands.
+func (c *Conn) multiCall(cmds []call) (r *Reply) {
+	r = new(Reply)
+	if err := c.writeRequest(cmds...); err == nil {
+		r.Type = ReplyMulti
+		r.Elems = make([]*Reply, len(cmds))
+		for i := range cmds {
+			reply := c.read()
+			r.Elems[i] = reply
+		}
+	} else {
+		r.Err = newError(err.Error())
+	}
+
+	return r
+}
+/*
 // subscription handles subscribe, unsubscribe, psubscribe and pubsubscribe calls.
-func (c *conn) subscription(subType subType, data []string) *Error {
+func (c *Conn) subscription(subType subType, data []string) *Error {
 	// Prepare command.
 	var cmd Cmd
 
@@ -180,30 +240,11 @@ func (c *conn) subscription(subType subType, data []string) *Error {
 	return newError(err.Error())
 	// subscribe/etc. return their replies as pubsub messages
 }
-
-// close closes the connection.
-// It is safe to call close() multiple times.
-func (c *conn) close() {
-	atomic.StoreInt32(&c.closed_, 1)
-
-	if c.conn != nil {
-		c.conn.Close()
-	}
-}
-
-// closed returns true, if connection is closed, otherwise false.
-func (c *conn) closed() bool {
-	if atomic.LoadInt32(&c.closed_) == 1 {
-		return true
-	}
-
-	return false
-}
-
+*/
 // helper for read()
-func (c *conn) readErrHdlr(err error) (r *Reply) {
+func (c *Conn) readErrHdlr(err error) (r *Reply) {
 	if err != nil {
-		c.close()
+		c.Close()
 		err_, ok := err.(net.Error)
 		if ok && err_.Timeout() {
 			return &Reply{
@@ -223,12 +264,12 @@ func (c *conn) readErrHdlr(err error) (r *Reply) {
 }
 
 // read reads data from the connection and returns a Reply.
-func (c *conn) read() (r *Reply) {
+func (c *Conn) read() (r *Reply) {
 	var err error
 	var b []byte
 	r = new(Reply)
 
-	if !c.noReadTimeout {
+	if !c.submode {
 		c.setReadTimeout()
 	}
 	b, err = c.reader.ReadBytes('\n')
@@ -285,7 +326,7 @@ func (c *conn) read() (r *Reply) {
 				rc := 0
 
 				for rc < ir {
-					if !c.noReadTimeout {
+					if !c.submode {
 						c.setReadTimeout()
 					}
 					n, err := c.reader.Read(br[rc:])
@@ -335,7 +376,7 @@ func (c *conn) read() (r *Reply) {
 	return r
 }
 
-func (c *conn) writeRequest(calls ...call) *Error {
+func (c *Conn) writeRequest(calls ...call) *Error {
 	c.setWriteTimeout()
 	if _, err := c.conn.Write(createRequest(calls...)); err != nil {
 		errn, ok := err.(net.Error)
@@ -348,13 +389,13 @@ func (c *conn) writeRequest(calls ...call) *Error {
 	return nil
 }
 
-func (c *conn) setReadTimeout() {
+func (c *Conn) setReadTimeout() {
 	if c.config.Timeout != 0 {
 		c.conn.SetReadDeadline(time.Now().Add(c.config.Timeout))
 	}
 }
 
-func (c *conn) setWriteTimeout() {
+func (c *Conn) setWriteTimeout() {
 	if c.config.Timeout != 0 {
 		c.conn.SetWriteDeadline(time.Now().Add(c.config.Timeout))
 	}

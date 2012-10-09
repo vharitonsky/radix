@@ -17,9 +17,6 @@ type Config struct {
 	// Default: ""
 	Password string
 
-	// Connection pool capacity. Default: 50
-	PoolCapacity int
-
 	// Socket timeout. Default: 0 (no timeouts)
 	Timeout time.Duration
 
@@ -32,7 +29,6 @@ func DefaultConfig() Config {
 	return Config{
 		Network:      "tcp",
 		Address:      "127.0.0.1:6379",
-		PoolCapacity: 50,
 		RetryLoading: true,
 	}
 }

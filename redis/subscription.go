@@ -1,7 +1,7 @@
 package redis
-
+/*
 import (
-	"log"
+	"fmt"
 )
 
 type subType uint8
@@ -15,7 +15,7 @@ const (
 
 // Subscription is a structure for holding a Redis subscription for multiple channels.
 type Subscription struct {
-	c       *conn
+	c       *Conn
 	msgHdlr func(msg *Message)
 }
 
@@ -150,7 +150,7 @@ Err:
 	// Error/Invalid message reply
 	// we shouldn't generally get these, except when closing.
 	if r.Err != nil && !r.Err.Test(ErrorConnection) {
-		log.Printf("received an unexpected error reply while in pubsub mode: %s.\n ignoring...",
+		fmt.Printf("received unexpected error reply while in pubsub mode: %s.\n ignoring...",
 			r.Err)
 	}
 
@@ -171,3 +171,4 @@ func (s *Subscription) listener() {
 		go s.msgHdlr(m)
 	}
 }
+*/

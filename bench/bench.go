@@ -10,7 +10,7 @@ import (
 	"time"
 )
 
-var connections *int = flag.Int("c", 50, "number of connections")
+var connections *int = flag.Int("c", 1, "number of connections")
 var requests *int = flag.Int("n", 10000, "number of request")
 var dsize *int = flag.Int("d", 3, "data size")
 var cpuprof *string = flag.String("cpuprof", "", "filename for cpuprof")
@@ -19,13 +19,23 @@ var database *int = flag.Int("b", 8, "database used for testing (WILL BE FLUSHED
 var conf redis.Config = redis.DefaultConfig()
 
 func flushdb() *redis.Error {
-	c := redis.NewClient(conf)
+	c, _ := redis.NewConn(conf)
 	defer c.Close()
 	rep := c.Flushdb()
 	return rep.Err
 }
 
-func test(c *redis.Client, ch chan struct{}, doneChan chan struct{}, command string, params ...interface{}) {
+func testConn(c *redis.Conn, command string, params ...interface{}) {
+	for i:=0; i<*requests; i++ {
+		r := c.Call(command, params...)
+		if r.Err != nil {
+			fmt.Println(r.Err)
+			os.Exit(1)
+		}
+	}
+}
+
+func test(c *redis.Conn, ch chan struct{}, doneChan chan struct{}, command string, params ...interface{}) {
 	for _ = range ch {
 		r := c.Call(command, params...)
 		if r.Err != nil {
@@ -40,22 +50,29 @@ func test(c *redis.Client, ch chan struct{}, doneChan chan struct{}, command str
 // and displays the given test name.
 func benchmark(testname string, command string, params ...interface{}) {
 	fmt.Printf("===== %s =====\n", testname)
-	c := redis.NewClient(conf)
+	c,_ := redis.NewConn(conf)
 	defer c.Close()
 
-	ch := make(chan struct{})
-	doneChan := make(chan struct{})
 	start := time.Now()
+	if *connections <= 1 {
+		// use a single connection
+		testConn(c, command, params)
+	} else {
+		// use workers
+		ch := make(chan struct{})
+		doneChan := make(chan struct{})
 
-	for i := 0; i < *connections; i++ {
-		go test(c, ch, doneChan, command, params...)
-	}
-	for i := 0; i < *requests; i++ {
-		ch <- struct{}{}
-	}
-	close(ch)
-	for i := 0; i < *connections; i++ {
-		<-doneChan
+
+		for i := 0; i < *connections; i++ {
+			go test(c, ch, doneChan, command, params...)
+		}
+		for i := 0; i < *requests; i++ {
+			ch <- struct{}{}
+		}
+		close(ch)
+		for i := 0; i < *connections; i++ {
+			<-doneChan
+		}
 	}
 
 	duration := time.Now().Sub(start)
@@ -78,7 +95,7 @@ func main() {
 
 	flag.Parse()
 	conf.Database = *database
-	conf.PoolCapacity = *connections
+	_ = *connections
 	// minimum amount of requests
 	if *requests < 1000 {
 		*requests = 1000
